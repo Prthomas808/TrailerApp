@@ -1,5 +1,5 @@
 //
-//  HomeVC.swift
+//  TrendingMovieView.swift
 //  TrailerApp
 //
 //  Created by Pedro Thomas on 12/20/23.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeVC: UIViewController {
+class TrendingMovieView: UIViewController {
 
   // MARK: Properties
   private var collectionView: UICollectionView!
@@ -19,15 +19,11 @@ class HomeVC: UIViewController {
     configureNavBar()
     configureCollectionView()
   }
-  
-  // MARK: Objc Functions
-  
-  
+
   // MARK: Helping Functions
   private func configureNavBar() {
-    title = "Trending Movies"
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: nil)
-    navigationController?.navigationBar.prefersLargeTitles = true
+    //navigationController?.navigationBar.prefersLargeTitles = true
   }
   
   private func configureCollectionView() {
@@ -47,23 +43,45 @@ class HomeVC: UIViewController {
     super.viewDidLayoutSubviews()
     collectionView.frame = view.bounds
   }
-
 }
 
-extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension TrendingMovieView: UICollectionViewDelegate, UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     10
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.reusableID, for: indexPath) as? MovieCell else { return UICollectionViewCell() }
+    
+    TMDBManager.shared.fetchTMDBInfo(endpoint: "trending/movie/day") { result in
+      switch result {
+      case .success(let movie):
+        DispatchQueue.main.async {
+          cell.configure(with: movie, indexPath: indexPath.row)
+        }
+        
+      case .failure(let error): print(error.rawValue)
+      }
+    }
+    
+    
     return cell
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let vc = MovieDetailVC()
+    
+    TMDBManager.shared.fetchTMDBInfo(endpoint: "trending/movie/day") { result in
+      switch result {
+      case .success(let movie):
+        DispatchQueue.main.async {
+          vc.configure(with: movie, indexPath: indexPath.row)
+        }
+        
+      case .failure(let error): print(error.rawValue)
+      }
+    }
+    
     navigationController?.pushViewController(vc, animated: true)
   }
-  
-  
 }

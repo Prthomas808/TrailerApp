@@ -25,24 +25,17 @@ class MovieDetailVC: UIViewController {
     configureConstraints()
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    navigationController?.navigationBar.prefersLargeTitles = false
-  }
-  
   // MARK: Objc Functions
   
   
   // MARK: Helping Functions
   private func configureNavBar() {
-    navigationController?.navigationBar.topItem?.backButtonTitle = "Bsck"
-    
+    navigationController?.navigationBar.topItem?.backButtonTitle = "Back"
   }
   
   private func configureProperties() {
     view.addSubview(posterImageView)
     posterImageView.contentMode = .scaleAspectFit
-    posterImageView.backgroundColor = .systemGray5
     posterImageView.translatesAutoresizingMaskIntoConstraints = false
     
     vStack = UIStackView(arrangedSubviews: [movieTitle, movieDescription])
@@ -53,9 +46,7 @@ class MovieDetailVC: UIViewController {
     vStack.distribution = .fill
     vStack.alignment = .center
 
-    movieTitle.text = "The Hunger Games: Catching Fire"
-    
-    movieDescription.text = "Katniss Everdeen and Peeta Mellark become targets of the Capitol after their victory in the 74th Hunger Games sparks a rebellion in the Districts of Panem."
+    movieTitle.textAlignment = .center
     movieDescription.textAlignment = .center
     
     view.addSubview(trailerButton)
@@ -74,8 +65,8 @@ class MovieDetailVC: UIViewController {
     NSLayoutConstraint.activate([
       vStack.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 20),
       vStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      vStack.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+      vStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
     ])
     
     // Button constraints
@@ -85,5 +76,15 @@ class MovieDetailVC: UIViewController {
       trailerButton.widthAnchor.constraint(equalToConstant: 200),
       trailerButton.heightAnchor.constraint(equalToConstant: 45)
     ])
+  }
+  
+  public func configure(with movie: [MovieInformation], indexPath: Int) {
+    guard let poster = movie[indexPath].posterPath else { return }
+    guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else { return }
+    
+    self.posterImageView.sd_setImage(with: url)
+    
+    self.movieTitle.text = movie[indexPath].originalTitle
+    self.movieDescription.text = movie[indexPath].overview
   }
 }

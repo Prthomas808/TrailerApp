@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MovieCell: UICollectionViewCell {
     
@@ -18,6 +19,7 @@ class MovieCell: UICollectionViewCell {
   // MARK: Lifecyle
   override init(frame: CGRect) {
     super.init(frame: frame)
+    self.backgroundColor = .systemGray6
     configureProperties()
     configureConstraints()
     layer.cornerRadius = 8
@@ -34,11 +36,12 @@ class MovieCell: UICollectionViewCell {
   private func configureProperties() {
     contentView.addSubview(posterImageView)
     posterImageView.contentMode = .scaleAspectFit
-    posterImageView.backgroundColor = .systemGray5
+    posterImageView.layer.cornerRadius = 10
+    posterImageView.clipsToBounds = true
+    posterImageView.layer.masksToBounds = true
     posterImageView.translatesAutoresizingMaskIntoConstraints = false
     
     contentView.addSubview(movieName)
-    movieName.text = "The Hunger Games: Catching Fire"
   }
   
   private func configureConstraints() {
@@ -53,9 +56,16 @@ class MovieCell: UICollectionViewCell {
     // Movie Title Constraints
     NSLayoutConstraint.activate([
       movieName.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
-      movieName.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 5),
+      movieName.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 10),
       movieName.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
     ])
   }
   
+  public func configure(with movie: [MovieInformation], indexPath: Int) {
+    guard let poster = movie[indexPath].posterPath else { return }
+    guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else { return }
+    
+    self.posterImageView.sd_setImage(with: url)
+    self.movieName.text = movie[indexPath].originalTitle ?? movie[indexPath].title
+  }
 }
