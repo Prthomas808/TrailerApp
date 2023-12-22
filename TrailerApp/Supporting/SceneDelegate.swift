@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     window?.windowScene = windowScene
     window?.rootViewController = TabBarVC()
     window?.makeKeyAndVisible()
-
+    SDImageCache.shared.config.maxDiskSize = 1000000 * 20
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {

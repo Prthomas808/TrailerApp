@@ -72,11 +72,11 @@ class MovieDetailVC: UIViewController {
       webview.topAnchor.constraint(equalTo: vStack.bottomAnchor, constant: 20),
       webview.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       webview.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 20),
-      webview.heightAnchor.constraint(equalToConstant: 200)
+      webview.heightAnchor.constraint(equalToConstant: 225)
     ])
   }
   
-  public func configure(with movie: [MovieInformation], indexPath: Int) {
+  public func configure(with movie: [MovieInformation], indexPath: Int) {    
     guard let poster = movie[indexPath].posterPath else { return }
     guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else { return }
     
