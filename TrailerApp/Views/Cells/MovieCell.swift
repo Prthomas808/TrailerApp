@@ -19,7 +19,6 @@ class MovieCell: UICollectionViewCell {
   // MARK: Lifecyle
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.backgroundColor = .systemGray6
     configureProperties()
     configureConstraints()
     layer.cornerRadius = 8

@@ -42,7 +42,6 @@ class ComingSoonView: UIViewController {
     super.viewDidLayoutSubviews()
     collectionView.frame = view.bounds
   }
-
 }
 
 extension ComingSoonView: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -61,6 +60,7 @@ extension ComingSoonView: UICollectionViewDelegate, UICollectionViewDataSource {
         print(error.rawValue)
       }
     }
+
     return cell
   }
   
@@ -70,11 +70,9 @@ extension ComingSoonView: UICollectionViewDelegate, UICollectionViewDataSource {
     TMDBManager.shared.fetchTMDBInfo(endpoint: "movie/upcoming") { result in
       switch result {
       case .success(let movie):
-        DispatchQueue.main.async {
-          vc.configure(with: movie, indexPath: indexPath.row)
-        }
-        
-      case .failure(let error): print(error.rawValue)
+        DispatchQueue.main.async { vc.configure(with: movie, indexPath: indexPath.row) }
+      case .failure(let error):
+        print(error.rawValue)
       }
     }
     

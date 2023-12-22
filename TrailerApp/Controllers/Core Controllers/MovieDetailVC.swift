@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import WebKit
 
 class MovieDetailVC: UIViewController {
 
@@ -13,7 +14,7 @@ class MovieDetailVC: UIViewController {
   private let posterImageView = UIImageView()
   private let movieTitle = ReusableLabel(text: nil, fontSize: 18, weight: .semibold, color: .label, numberOfLines: 0)
   private let movieDescription = ReusableLabel(text: nil, fontSize: 15, weight: .regular, color: .label, numberOfLines: 0)
-  private let trailerButton = ReusableButton(buttonTitle: "Watch Trailer", textColor: .white, buttonColor: .systemRed)
+  private let webview = WKWebView()
   private var vStack: UIStackView!
   
   // MARK: Lifecyle
@@ -24,10 +25,7 @@ class MovieDetailVC: UIViewController {
     configureProperties()
     configureConstraints()
   }
-  
-  // MARK: Objc Functions
-  
-  
+    
   // MARK: Helping Functions
   private func configureNavBar() {
     navigationController?.navigationBar.topItem?.backButtonTitle = "Back"
@@ -49,7 +47,9 @@ class MovieDetailVC: UIViewController {
     movieTitle.textAlignment = .center
     movieDescription.textAlignment = .center
     
-    view.addSubview(trailerButton)
+    view.addSubview(webview)
+    webview.backgroundColor = .systemBackground
+    webview.translatesAutoresizingMaskIntoConstraints = false
   }
   
   private func configureConstraints() {
@@ -71,10 +71,10 @@ class MovieDetailVC: UIViewController {
     
     // Button constraints
     NSLayoutConstraint.activate([
-      trailerButton.topAnchor.constraint(equalTo: vStack.bottomAnchor, constant: 20),
-      trailerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      trailerButton.widthAnchor.constraint(equalToConstant: 200),
-      trailerButton.heightAnchor.constraint(equalToConstant: 45)
+      webview.topAnchor.constraint(equalTo: vStack.bottomAnchor, constant: 20),
+      webview.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      webview.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 20),
+      webview.heightAnchor.constraint(equalToConstant: 200)
     ])
   }
   
@@ -83,8 +83,19 @@ class MovieDetailVC: UIViewController {
     guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else { return }
     
     self.posterImageView.sd_setImage(with: url)
-    
     self.movieTitle.text = movie[indexPath].originalTitle
     self.movieDescription.text = movie[indexPath].overview
+    
+    YoutubeManager.shared.getMovieTrailer(with: movie[indexPath].originalTitle ?? "") { [weak self] result in
+      switch result {
+      case .success(let videoInfo):
+        DispatchQueue.main.async {
+          guard let url = URL(string: "https://www.youtube.com/embed/\(videoInfo.id.videoId)") else { return }
+          self?.webview.load(URLRequest(url: url))
+        }
+      case .failure(let error):
+        print(error.rawValue)
+      }
+    }
   }
 }
