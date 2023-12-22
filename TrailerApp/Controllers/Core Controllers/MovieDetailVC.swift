@@ -11,7 +11,7 @@ import WebKit
 class MovieDetailVC: UIViewController {
 
   // MARK: Properties
-  private let posterImageView = UIImageView()
+  private let posterImageView = ReusableImageView()
   private let movieTitle = ReusableLabel(text: nil, fontSize: 18, weight: .semibold, color: .label, numberOfLines: 0)
   private let movieDescription = ReusableLabel(text: nil, fontSize: 15, weight: .regular, color: .label, numberOfLines: 0)
   private let webview = WKWebView()
@@ -33,9 +33,7 @@ class MovieDetailVC: UIViewController {
   
   private func configureProperties() {
     view.addSubview(posterImageView)
-    posterImageView.contentMode = .scaleAspectFit
-    posterImageView.translatesAutoresizingMaskIntoConstraints = false
-    
+
     vStack = UIStackView(arrangedSubviews: [movieTitle, movieDescription])
     view.addSubview(vStack)
     vStack.translatesAutoresizingMaskIntoConstraints = false

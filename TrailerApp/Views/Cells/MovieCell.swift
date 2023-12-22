@@ -13,7 +13,7 @@ class MovieCell: UICollectionViewCell {
   // MARK: Properties
   static let reusableID = "MovieCell"
   
-  private let posterImageView = UIImageView()
+  private let posterImageView = ReusableImageView()
   private let movieName = ReusableLabel(text: nil, fontSize: 15, weight: .light, color: .label, numberOfLines: 0)
   
   // MARK: Lifecyle
@@ -21,25 +21,15 @@ class MovieCell: UICollectionViewCell {
     super.init(frame: frame)
     configureProperties()
     configureConstraints()
-    layer.cornerRadius = 8
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  // MARK: Objc Functions
-  
-  
+
   // MARK: Helping Functions
   private func configureProperties() {
     contentView.addSubview(posterImageView)
-    posterImageView.contentMode = .scaleAspectFit
-    posterImageView.layer.cornerRadius = 10
-    posterImageView.clipsToBounds = true
-    posterImageView.layer.masksToBounds = true
-    posterImageView.translatesAutoresizingMaskIntoConstraints = false
-    
     contentView.addSubview(movieName)
   }
   

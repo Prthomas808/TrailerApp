@@ -39,7 +39,6 @@ class TMDBManager {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let movie = try decoder.decode(Movie.self, from: data)
-//        let result = try JSONSerialization.jsonObject(with: data)
         completion(.success(movie.results))
       } catch {
         completion(.failure(.invalidData))

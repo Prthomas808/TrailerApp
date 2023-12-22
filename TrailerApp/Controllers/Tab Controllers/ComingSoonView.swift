@@ -11,6 +11,7 @@ class ComingSoonView: UIViewController {
 
   // MARK: Properties
   private var collectionView: UICollectionView!
+  private let viewModel = TrailerAppVIewModel()
   
   // MARK: Lifecyle
   override func viewDidLoad() {
@@ -45,20 +46,13 @@ class ComingSoonView: UIViewController {
 }
 
 extension ComingSoonView: UICollectionViewDelegate, UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    10
-  }
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 10 }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.reusableID, for: indexPath) as? MovieCell else { return UICollectionViewCell() }
     
-    TMDBManager.shared.fetchTMDBInfo(endpoint: "movie/upcoming") { result in
-      switch result {
-      case .success(let movie):
-        DispatchQueue.main.async { cell.configure(with: movie, indexPath: indexPath.row) }
-      case .failure(let error):
-        print(error.rawValue)
-      }
+    viewModel.fetchMovie(endpoint: "movie/upcoming") { movie in
+      cell.configure(with: movie, indexPath: indexPath.row)
     }
 
     return cell
@@ -66,14 +60,9 @@ extension ComingSoonView: UICollectionViewDelegate, UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let vc = MovieDetailVC()
-    
-    TMDBManager.shared.fetchTMDBInfo(endpoint: "movie/upcoming") { result in
-      switch result {
-      case .success(let movie):
-        DispatchQueue.main.async { vc.configure(with: movie, indexPath: indexPath.row) }
-      case .failure(let error):
-        print(error.rawValue)
-      }
+        
+    viewModel.fetchMovie(endpoint: "movie/upcoming") { movie in
+      vc.configure(with: movie, indexPath: indexPath.row)
     }
     
     navigationController?.pushViewController(vc, animated: true)

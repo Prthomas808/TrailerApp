@@ -30,6 +30,8 @@
 		1D9043482B347AE900C25E3F /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1D9043472B347AE900C25E3F /* SDWebImageMapKit */; };
 		1D90434A2B34C63200C25E3F /* YoutubeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9043492B34C63200C25E3F /* YoutubeManager.swift */; };
 		1D90434C2B34C66700C25E3F /* Youtube.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D90434B2B34C66700C25E3F /* Youtube.swift */; };
+		1D9043512B350EF600C25E3F /* TrailerAppVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9043502B350EF600C25E3F /* TrailerAppVIewModel.swift */; };
+		1D9043532B35140200C25E3F /* ReusableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9043522B35140200C25E3F /* ReusableImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		1D9043422B34718900C25E3F /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		1D9043492B34C63200C25E3F /* YoutubeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeManager.swift; sourceTree = "<group>"; };
 		1D90434B2B34C66700C25E3F /* Youtube.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Youtube.swift; sourceTree = "<group>"; };
+		1D9043502B350EF600C25E3F /* TrailerAppVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerAppVIewModel.swift; sourceTree = "<group>"; };
+		1D9043522B35140200C25E3F /* ReusableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,7 @@
 				1D90433E2B346E7000C25E3F /* Managers */,
 				1D90433F2B346E7A00C25E3F /* Models */,
 				1D9043222B3391EE00C25E3F /* Views */,
+				1D90434F2B350ED000C25E3F /* ViewModels */,
 				1D90431F2B33918B00C25E3F /* Controllers */,
 				1D90431E2B33917900C25E3F /* Supporting */,
 				1D9043182B33916E00C25E3F /* Info.plist */,
@@ -140,6 +145,7 @@
 				1D90432A2B33925900C25E3F /* ReusableBodyLabel.swift */,
 				1D90432B2B33925900C25E3F /* ReusableSystemImage.swift */,
 				1D90432C2B33925900C25E3F /* ReusableView.swift */,
+				1D9043522B35140200C25E3F /* ReusableImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -194,6 +200,14 @@
 				1D9043372B33953000C25E3F /* MovieDetailVC.swift */,
 			);
 			path = "Core Controllers";
+			sourceTree = "<group>";
+		};
+		1D90434F2B350ED000C25E3F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1D9043502B350EF600C25E3F /* TrailerAppVIewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -279,7 +293,9 @@
 				1D9043362B33925900C25E3F /* UIViewController+Ext.swift in Sources */,
 				1D90430B2B33916600C25E3F /* AppDelegate.swift in Sources */,
 				1D9043302B33925900C25E3F /* ReusableButton.swift in Sources */,
+				1D9043512B350EF600C25E3F /* TrailerAppVIewModel.swift in Sources */,
 				1D9043382B33953000C25E3F /* MovieDetailVC.swift in Sources */,
+				1D9043532B35140200C25E3F /* ReusableImageView.swift in Sources */,
 				1D90433D2B339EC300C25E3F /* ComingSoonView.swift in Sources */,
 				1D9043352B33925900C25E3F /* ReusableView.swift in Sources */,
 				1D9043242B33921600C25E3F /* MovieCell.swift in Sources */,

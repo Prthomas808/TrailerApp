@@ -11,6 +11,7 @@ class TrendingMovieView: UIViewController {
 
   // MARK: Properties
   private var collectionView: UICollectionView!
+  private let viewModel = TrailerAppVIewModel()
   
   // MARK: Lifecyle
   override func viewDidLoad() {
@@ -23,7 +24,6 @@ class TrendingMovieView: UIViewController {
   // MARK: Helping Functions
   private func configureNavBar() {
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: nil)
-    //navigationController?.navigationBar.prefersLargeTitles = true
   }
   
   private func configureCollectionView() {
@@ -46,40 +46,23 @@ class TrendingMovieView: UIViewController {
 }
 
 extension TrendingMovieView: UICollectionViewDelegate, UICollectionViewDataSource {
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    10
-  }
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int { 10 }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.reusableID, for: indexPath) as? MovieCell else { return UICollectionViewCell() }
     
-    TMDBManager.shared.fetchTMDBInfo(endpoint: "trending/movie/day") { result in
-      switch result {
-      case .success(let movie):
-        DispatchQueue.main.async {
-          cell.configure(with: movie, indexPath: indexPath.row)
-        }
-        
-      case .failure(let error): print(error.rawValue)
-      }
+    viewModel.fetchMovie(endpoint: "trending/movie/day") { movie in
+      cell.configure(with: movie, indexPath: indexPath.row)
     }
-    
-    
+
     return cell
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let vc = MovieDetailVC()
-    
-    TMDBManager.shared.fetchTMDBInfo(endpoint: "trending/movie/day") { result in
-      switch result {
-      case .success(let movie):
-        DispatchQueue.main.async {
-          vc.configure(with: movie, indexPath: indexPath.row)
-        }
         
-      case .failure(let error): print(error.rawValue)
-      }
+    viewModel.fetchMovie(endpoint: "trending/movie/day") { movie in
+      vc.configure(with: movie, indexPath: indexPath.row)
     }
     
     navigationController?.pushViewController(vc, animated: true)
