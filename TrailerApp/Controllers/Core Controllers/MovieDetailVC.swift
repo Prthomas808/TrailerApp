@@ -76,14 +76,14 @@ class MovieDetailVC: UIViewController {
     ])
   }
   
-  public func configure(with movie: [MovieInformation], indexPath: Int) {    
+  public func configure(with movie: [MovieInformation], indexPath: Int) {
     guard let poster = movie[indexPath].posterPath else { return }
     guard let url = URL(string: "https://image.tmdb.org/t/p/w500/\(poster)") else { return }
-    
+
     self.posterImageView.sd_setImage(with: url)
     self.movieTitle.text = movie[indexPath].originalTitle
     self.movieDescription.text = movie[indexPath].overview
-    
+
     YoutubeManager.shared.getMovieTrailer(with: movie[indexPath].originalTitle ?? "") { [weak self] result in
       switch result {
       case .success(let videoInfo):
@@ -96,4 +96,5 @@ class MovieDetailVC: UIViewController {
       }
     }
   }
+
 }
