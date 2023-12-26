@@ -14,6 +14,7 @@ class MovieDetailVC: UIViewController {
   private let posterImageView = ReusableImageView()
   private let movieTitle = ReusableLabel(text: nil, fontSize: 18, weight: .semibold, color: .label, numberOfLines: 0)
   private let movieDescription = ReusableLabel(text: nil, fontSize: 15, weight: .regular, color: .label, numberOfLines: 0)
+  private let trailerButton = ReusableButton(buttonTitle: "Watch Trailer", textColor: .white, buttonColor: .systemRed)
   private let webview = WKWebView()
   private var vStack: UIStackView!
   
@@ -24,6 +25,22 @@ class MovieDetailVC: UIViewController {
     configureNavBar()
     configureProperties()
     configureConstraints()
+  }
+  
+  @objc func watchTrailerTapped() {
+    guard let movieTitle = movieTitle.text else { return }
+    
+    YoutubeManager.shared.getMovieTrailer(with: movieTitle) { result in
+      switch result {
+      case .success(let videoInfo):
+        DispatchQueue.main.async {
+          guard let url = URL(string: "https://www.youtube.com/embed/\(videoInfo.id.videoId)") else { return }
+          UIApplication.shared.open(url)
+        }
+      case .failure(let error):
+        print(error.rawValue)
+      }
+    }
   }
     
   // MARK: Helping Functions
@@ -45,9 +62,8 @@ class MovieDetailVC: UIViewController {
     movieTitle.textAlignment = .center
     movieDescription.textAlignment = .center
     
-    view.addSubview(webview)
-    webview.backgroundColor = .systemBackground
-    webview.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(trailerButton)
+    trailerButton.addTarget(self, action: #selector(watchTrailerTapped), for: .touchUpInside)
   }
   
   private func configureConstraints() {
@@ -61,7 +77,7 @@ class MovieDetailVC: UIViewController {
     
     // vStack constraints
     NSLayoutConstraint.activate([
-      vStack.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 20),
+      vStack.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 10),
       vStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       vStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
       vStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
@@ -69,10 +85,10 @@ class MovieDetailVC: UIViewController {
     
     // Button constraints
     NSLayoutConstraint.activate([
-      webview.topAnchor.constraint(equalTo: vStack.bottomAnchor, constant: 20),
-      webview.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      webview.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 20),
-      webview.heightAnchor.constraint(equalToConstant: 225)
+      trailerButton.topAnchor.constraint(equalTo: vStack.bottomAnchor, constant: 20),
+      trailerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      trailerButton.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 20),
+      trailerButton.heightAnchor.constraint(equalToConstant: 40)
     ])
   }
   
@@ -83,18 +99,5 @@ class MovieDetailVC: UIViewController {
     self.posterImageView.sd_setImage(with: url)
     self.movieTitle.text = movie[indexPath].originalTitle
     self.movieDescription.text = movie[indexPath].overview
-
-    YoutubeManager.shared.getMovieTrailer(with: movie[indexPath].originalTitle ?? "") { [weak self] result in
-      switch result {
-      case .success(let videoInfo):
-        DispatchQueue.main.async {
-          guard let url = URL(string: "https://www.youtube.com/embed/\(videoInfo.id.videoId)") else { return }
-          self?.webview.load(URLRequest(url: url))
-        }
-      case .failure(let error):
-        print(error.rawValue)
-      }
-    }
   }
-
 }

@@ -42,6 +42,7 @@ class YoutubeManager {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let trailer = try decoder.decode(YoutubeResponse.self, from: data)
         completion(.success(trailer.items[0]))
+        print(trailer.items[0].id.videoId)
       } catch {
         completion(.failure(.invalidData))
       }
