@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import WebKit
 
 class MovieDetailVC: UIViewController {
 
@@ -15,7 +14,6 @@ class MovieDetailVC: UIViewController {
   private let movieTitle = ReusableLabel(text: nil, fontSize: 18, weight: .semibold, color: .label, numberOfLines: 0)
   private let movieDescription = ReusableLabel(text: nil, fontSize: 15, weight: .regular, color: .label, numberOfLines: 0)
   private let trailerButton = ReusableButton(buttonTitle: "Watch Trailer", textColor: .white, buttonColor: .systemRed)
-  private let webview = WKWebView()
   private var vStack: UIStackView!
   
   // MARK: Lifecyle
